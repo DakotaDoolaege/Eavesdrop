@@ -8,7 +8,7 @@ import sys
 import nltk
 
 script_file = "res/script.txt"
-speech_file = "res/speech.txt"
+speech_file = "res/eavesdrop.txt"
 gpt_file = "res/gpt2.txt"
 
 def GeneratePrompt():
