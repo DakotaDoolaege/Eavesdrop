@@ -18,7 +18,7 @@ def GeneratePrompt():
 	speech_dict = CreateMediaDict(speech_file)
 	gpt_dict = CreateMediaDict(gpt_file)
 	
-	print("\n---------------------\ninserts:")
+	print("\n---------------------\nNoun inserts:")
 	insert = None
 	if "NN" in script_dict.keys():
 		for noun in script_dict["NN"]:
@@ -31,6 +31,7 @@ def GeneratePrompt():
 			except  KeyError:
 				continue
 
+	print("Verb inserts:")
 	if "VB" in script_dict.keys():
 		for verb in script_dict["VB"]:
 			try:
