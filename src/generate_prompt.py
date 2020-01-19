@@ -18,12 +18,7 @@ def GeneratePrompt():
 	speech_dict = CreateMediaDict(speech_file)
 	gpt_dict = CreateMediaDict(gpt_file)
 	
-	'''
-	print("SCRIPT:", script_dict)
-	print("SPEECH:", speech_dict)
-	print("GPT:", gpt_dict)
-	'''
-
+	print("\n---------------------\ninserts:")
 	insert = None
 	if "NN" in script_dict.keys():
 		for noun in script_dict["NN"]:
@@ -46,8 +41,7 @@ def GeneratePrompt():
 				continue
 			except  KeyError:
 				continue
-	
-	print(prompt)
+	print("---------------------")
 	return prompt
 
 
@@ -91,12 +85,12 @@ def CreateMediaDict(filename):
 
 	media_dict = PopulateDict(media_prompt)
 
-	'''
+	
 	if filename == speech_file :
 		f.seek(0)
 		f.write("1")
 		f.truncate()
-	'''
+
 	f.close()
 	return media_dict
 
