@@ -24,36 +24,29 @@ def GeneratePrompt():
 	if "NN" in script_dict.keys():
 		for noun in script_dict["NN"]:
 			try:
-				insert = gpt_dict["NN"].pop()
-				print(insert)				
-				prompt.replace(noun, insert)
+				insert = gpt_dict["NN"].pop()			
+				prompt = prompt.replace(noun, insert)
 				print(prompt)
 			except IndexError:
-				print("index err")
 				continue
 			except  KeyError:
-				print ("key err")
 				continue
 
 	if "VB" in script_dict.keys():
 		for verb in script_dict["VB"]:
 			try:
 				insert = speech_dict["VB"].pop()
-				print(insert)
-				prompt.replace(verb, insert)
+				prompt = prompt.replace(verb, insert)
 				print(prompt)
 			except IndexError:
-				print("index err")
 				continue
 			except  KeyError:
-				print ("key err")
 				continue
-
 	return prompt
 
 
 def GetBasePrompt():
-	f = open(gpt_file)
+	f = open(script_file)
 	lines = f.readlines()
 	f.close()
 
