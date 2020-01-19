@@ -1,0 +1,2 @@
+Yes for sure if there are not enought lines in the text file the program will crash.
+This would go faster if I had consumed a small mountain of coffee beans.
