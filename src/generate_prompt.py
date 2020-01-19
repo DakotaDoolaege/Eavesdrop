@@ -6,27 +6,26 @@
 #
 import sys
 import nltk
+import parseparse
 
-script_file = "res/script.txt"
 speech_file = "res/eavesdrop.txt"
 gpt_file = "res/gpt2.txt"
 
 def GeneratePrompt():
-	script_dict = CreateMediaDict(script_file)
+	
+	prompt = parseparse.Sliced()
+	script_dict = PopulateDict(prompt)
 	speech_dict = CreateMediaDict(speech_file)
 	gpt_dict = CreateMediaDict(gpt_file)
-
-	# get the last 2 lines of output from gpt2
-	prompt = GetBasePrompt()
-
+	
+	print("\n---------------------\ninserts:")
 	insert = None
-
 	if "NN" in script_dict.keys():
 		for noun in script_dict["NN"]:
 			try:
 				insert = gpt_dict["NN"].pop()
 				prompt = prompt.replace(noun, insert)
-				print(prompt)
+				print(insert)
 			except IndexError:
 				continue
 			except  KeyError:
@@ -37,57 +36,62 @@ def GeneratePrompt():
 			try:
 				insert = speech_dict["VB"].pop()
 				prompt = prompt.replace(verb, insert)
-				print(prompt)
+				print(insert)
 			except IndexError:
 				continue
 			except  KeyError:
 				continue
+	print("---------------------")
 	return prompt
 
 
-def GetBasePrompt():
-	f = open(script_file)
-	lines = f.readlines()
-	f.close()
+def PopulateDict(media_prompt):
 
-	if len(lines) > 1:
-		return lines[-2] + lines[-1]
-	elif len(lines) > 0:
-		return lines[-1]
-	else:
-		return "" # THIS NEEDS TO BE REPLACED WITH A LINE FROM script.txt
+	media_dict = {}
+	media_toks = nltk.word_tokenize(media_prompt)
+	media_tups = nltk.pos_tag(media_toks)
+
+	for k in media_tups:
+		if k[1] in media_dict:
+			media_dict[k[1]].append(k[0])
+		else:
+			media_dict[k[1]] = [k[0]]
+
+	return media_dict
+
 
 # returns a dictionary of lists of words. each list is a homogeneous group of a Part-of-Speech tag
 # so a list of verbs, a list of nouns, etc.
 def CreateMediaDict(filename):
 
 	f = open(filename,"r+")
+	media_dict = {}
 
-	if filename == gpt_file:
-		media_prompt = GetBasePrompt()
+	if (filename == gpt_file):
+		lines = f.readlines()
+		
+		if len(lines) > 1:
+			media_prompt =  lines[-2] + lines[-1]
+		elif len(lines) > 0:
+			media_prompt = lines[-1]
+		else:
+			media_prompt = f.readlines()[-2] + f.readlines[-1]
 	else:
 		media_prompt = f.readline()
-	dict = {}
 
 	if media_prompt == "1":
 		f.close()
-		return dict
+		return media_dict
 
-	media_toks = nltk.word_tokenize(media_prompt)
-	media_tups = nltk.pos_tag(media_toks)
+	media_dict = PopulateDict(media_prompt)
 
-	for k in media_tups:
-		if k[1] in dict:
-			dict[k[1]].append(k[0])
-		else:
-			dict[k[1]] = [k[0]]
-
-	f.seek(0)
+	
 	if filename == speech_file :
+		f.seek(0)
 		f.write("1")
 		f.truncate()
 
 	f.close()
-	return dict
+	return media_dict
 
 GeneratePrompt()
