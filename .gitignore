@@ -1,1 +1,14 @@
 gpt-2/
+Dockerfile.cpu
+Dockerfile.gpu
+LICENSE
+domains.txt
+download_model.py
+gpthelp.txt
+model_card.md
+myvenv/
+transcribe_streaming_infinite.py
+src/models
+src/__pycache__/
+src/encoder.py
+
