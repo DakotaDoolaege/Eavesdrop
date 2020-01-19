@@ -3,9 +3,9 @@
 import sys
 import nltk
 
-script_file = "script.txt"
-speech_file = "speech.txt"
-gpt_file = "gpt2.txt"
+script_file = "res/script.txt"
+speech_file = "res/speech.txt"
+gpt_file = "res/gpt2.txt"
 
 
 
@@ -48,7 +48,7 @@ def GeneratePrompt():
 
 
 def GetBasePrompt():
-	f = open("gpt2.txt")
+	f = open(gpt_file)
 	lines = f.readlines()
 	f.close()
 	return lines[-2] + lines[-1]
@@ -79,7 +79,7 @@ def CreateMediaDict(filename):
 			dict[k[1]] = [k[0]]
 	'''
 	f.seek(0)
-	if filename != "gpt2.txt":
+	if filename != gpt_file :
 		f.write("1")
 		f.truncate()
 	'''
