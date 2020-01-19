@@ -79,6 +79,7 @@ def CreateMediaDict(filename):
 			media_prompt = f.readlines()[-2] + f.readlines[-1]
 	else:
 		media_prompt = f.readline()
+		print(filename, " ", media_prompt)
 
 	if media_prompt == "1":
 		f.close()
