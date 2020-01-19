@@ -10,6 +10,8 @@ import model, sample, encoder
 
 from generate_prompt import *
 
+
+
 def interact_model(
     model_name='124M',
     seed=None,
@@ -75,12 +77,14 @@ def interact_model(
             #raw_text = input("Model prompt >>> ")
             raw_text = GeneratePrompt()
 
-            print("Model prompt from file >>> " + raw_text)
+            #print("Model prompt from file >>> " + raw_text)
+            print('\033[35m' + "Prompt: " + raw_text + '\033[0m')
             while not raw_text:
                 print('Prompt should not be empty!')
                 raw_text = input("Model prompt >>> ")
             context_tokens = enc.encode(raw_text)
             generated = 0
+            all_text = ""
             for _ in range(nsamples // batch_size):
                 out = sess.run(output, feed_dict={
                     context: [context_tokens for _ in range(batch_size)]
@@ -89,10 +93,15 @@ def interact_model(
                     generated += 1
                     text = enc.decode(out[i])
                     print("=" * 40 + " SAMPLE " + str(generated) + " " + "=" * 40)
-                    file = open("res/gpt2.txt", "w")
-                    file.write(text)
-                    file.close()
-                    print(text)
+                    if text != "":
+                        all_text += all_text + text
+                    #print(text)
+                print('\033[32m' + all_text.replace("\n\n","\n") + '\033[0m')
+                file = open("res/gpt2.txt", "w")
+                file.seek(0)
+                file.write(text)
+                file.truncate()
+                file.close()
             print("=" * 80)
 
 if __name__ == '__main__':
