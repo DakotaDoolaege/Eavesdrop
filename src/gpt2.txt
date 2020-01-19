@@ -1,0 +1,2 @@
+I've always been sort of confused on the subject of directory traversal in Python,
+PythonLand have a situation I'm curious about: I have a file that I want to access in a directory essentially parallel to the one I'm currently in.
